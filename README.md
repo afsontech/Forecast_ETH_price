@@ -46,7 +46,7 @@ This project presents a short-term **Ethereum (ETH-USD) price prediction web app
 3. Run the Streamlit app
 
    ```bash
-   streamlit run app.py
+   streamlit run model.py
    ```
 
 ## ⚠️ Disclaimer

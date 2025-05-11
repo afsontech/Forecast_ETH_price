@@ -14,6 +14,10 @@ warnings.simplefilter('ignore', ConvergenceWarning)
 
 
 # App title
+st.set_page_config(
+    page_title="Ethereum ARIMA Forecast",
+    page_icon="💹"
+)
 st.title("Ethereum Price Forecast (ARIMA Model)")
 
 # Define symbol and date range

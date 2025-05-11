@@ -26,8 +26,12 @@ end_date = today.strftime("%Y-%m-%d")
 start_date = (today - timedelta(days=365)).strftime("%Y-%m-%d")
 
 # Fetch Data
-symbol = "ETH-USD"
-df = yf.download(symbol, start=start_date, end=end_date, auto_adjust=False)
+@st.cache_data
+def load_data():
+    return yf.download("ETH-USD", start=start_date, end=end_date) 
+
+# Call the function and assign to df
+df = load_data()
 
 # This method is used for Column Arrange due Except Date Column Every Column showing row with  "ETH-USD"
 if isinstance(df.columns, pd.MultiIndex):
@@ -128,10 +132,15 @@ d = 1
 p = 3
 q = 2
 # Lets Use Sarima
-model = sm.tsa.statespace.SARIMAX(
-    df['Close'], order=(p, d, q), seasonal_order=(p, d, q, 12))
-model = model.fit()
-print(model.summary())
+@st.cache_resource
+def train_sarima_model(data, order, seasonal_order):
+    model = sm.tsa.statespace.SARIMAX(
+        data, order=order, seasonal_order=seasonal_order
+    )
+    return model.fit()
+
+# Use the function
+model = train_sarima_model(df['Close'], order=(p, d, q), seasonal_order=(p, d, q, 12))
 
 # Show forecast plot
 st.subheader("Forecasted Prices with Confidence Intervals")
